@@ -12,7 +12,7 @@ exports.isAuthenticatedUser = catchAsyncErrors(async(req,res,next) => {
         return next(new ErrorHander("Please Login to acess this resource",401))
     }
 
-    const decodedData = jwt.verify(token,process.env.JWT_SECRET);
+    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decodedData.id);
     next();
 })
@@ -21,7 +21,7 @@ exports.isAuthenticatedUser = catchAsyncErrors(async(req,res,next) => {
 exports.authorizeRoles = (...roles) => {     // 2:47
     return (req,res,next) => {          
         if(!(roles.includes(req.user.role))){
-            return next(new ErrorHander(`Role: ${req.res.role} is not allowed to acsess this resource`,403))
+            return next(new ErrorHander(`Role: ${req.user.role} is not allowed to acsess this resource`,403))
         }
         next();
     }
